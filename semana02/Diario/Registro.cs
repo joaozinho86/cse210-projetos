@@ -1,3 +1,5 @@
+using System;
+
 namespace DiarioPessoal
 {
     public class Registro

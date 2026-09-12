@@ -25,7 +25,7 @@ namespace DiarioPessoal
             Console.Write("Sua resposta: ");
             string resposta = Console.ReadLine();
             registros.Add(new Registro(pergunta, resposta));
-            Console.WriteLine("Registro adicionado com sucesso!\n");
+            Console.WriteLine("Registro adicionado!\n");
         }
 
         public void ExibirDiario()
@@ -53,7 +53,7 @@ namespace DiarioPessoal
                     writer.WriteLine($"{registro.Data}|{registro.Pergunta}|{registro.Resposta}");
                 }
             }
-            Console.WriteLine("Diário salvo com sucesso!\n");
+            Console.WriteLine("Diário salvo!\n");
         }
 
         public void CarregarDiario(string nomeArquivo)
@@ -65,8 +65,7 @@ namespace DiarioPessoal
             }
 
             registros.Clear();
-            string[] linhas = File.ReadAllLines(nomeArquivo);
-            foreach (var linha in linhas)
+            foreach (var linha in File.ReadAllLines(nomeArquivo))
             {
                 string[] partes = linha.Split('|');
                 if (partes.Length == 3)
@@ -78,7 +77,7 @@ namespace DiarioPessoal
                     registros.Add(registro);
                 }
             }
-            Console.WriteLine("Diário carregado com sucesso!\n");
+            Console.WriteLine("Diário carregado!\n");
         }
     }
 }
