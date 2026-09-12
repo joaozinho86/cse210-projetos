@@ -4,27 +4,6 @@ using System.IO;
 
 namespace DiarioPessoal
 {
-    // Classe que representa um registro do diário
-    public class Registro
-    {
-        public string Pergunta { get; set; }
-        public string Resposta { get; set; }
-        public string Data { get; set; }
-
-        public Registro(string pergunta, string resposta)
-        {
-            Pergunta = pergunta;
-            Resposta = resposta;
-            Data = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
-        }
-
-        public override string ToString()
-        {
-            return $"{Data} | Pergunta: {Pergunta} | Resposta: {Resposta}";
-        }
-    }
-
-    // Classe que representa o diário
     public class Diario
     {
         private List<Registro> registros = new List<Registro>();
@@ -100,55 +79,6 @@ namespace DiarioPessoal
                 }
             }
             Console.WriteLine("Diário carregado com sucesso!\n");
-        }
-    }
-
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            Diario diario = new Diario();
-            bool continuar = true;
-
-            while (continuar)
-            {
-                Console.WriteLine("=== Menu do Diário ===");
-                Console.WriteLine("1. Escrever um novo registro");
-                Console.WriteLine("2. Exibir o diário");
-                Console.WriteLine("3. Salvar o diário em um arquivo");
-                Console.WriteLine("4. Carregar o diário de um arquivo");
-                Console.WriteLine("5. Sair");
-                Console.Write("Escolha uma opção: ");
-
-                string opcao = Console.ReadLine();
-                Console.WriteLine();
-
-                switch (opcao)
-                {
-                    case "1":
-                        diario.NovoRegistro();
-                        break;
-                    case "2":
-                        diario.ExibirDiario();
-                        break;
-                    case "3":
-                        Console.Write("Digite o nome do arquivo para salvar: ");
-                        string salvarArquivo = Console.ReadLine();
-                        diario.SalvarDiario(salvarArquivo);
-                        break;
-                    case "4":
-                        Console.Write("Digite o nome do arquivo para carregar: ");
-                        string carregarArquivo = Console.ReadLine();
-                        diario.CarregarDiario(carregarArquivo);
-                        break;
-                    case "5":
-                        continuar = false;
-                        break;
-                    default:
-                        Console.WriteLine("Opção inválida.\n");
-                        break;
-                }
-            }
         }
     }
 }
