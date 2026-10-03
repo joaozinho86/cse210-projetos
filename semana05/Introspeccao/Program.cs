@@ -9,7 +9,10 @@ class Program
             Console.WriteLine("  1. Iniciar atividade de respiração");
             Console.WriteLine("  2. Iniciar atividade de reflexão");
             Console.WriteLine("  3. Iniciar atividade de listagem");
-            Console.WriteLine("  4. Sair");
+            // ===== FUNÇÃO EXTRA: opção para ver o registro de atividades =====
+            Console.WriteLine("  4. Ver registro de atividades realizadas");
+            Console.WriteLine("  5. Sair");
+            // =================================================================
             Console.Write("Selecione uma opção do menu: ");
 
             string choice = Console.ReadLine();
@@ -25,7 +28,12 @@ class Program
                 case "3":
                     new ListingActivity().Run();
                     break;
+                // ===== FUNÇÃO EXTRA: exibir estatísticas =====
                 case "4":
+                    ActivityStatistics.DisplayStatistics();
+                    break;
+                // =============================================
+                case "5":
                     return;
                 default:
                     Console.WriteLine("Opção inválida. Pressione Enter para tentar novamente.");
@@ -35,6 +43,54 @@ class Program
         }
     }
 }
+
+// ===== FUNÇÃO EXTRA: classe responsável por manter o registro de quantas vezes
+// as atividades foram realizadas. Usa encapsulamento com um dicionário privado. =====
+public static class ActivityStatistics
+{
+    private static Dictionary<string, int> _counts = new Dictionary<string, int>();
+
+    public static void RegisterCompletion(string activityName)
+    {
+        if (_counts.ContainsKey(activityName))
+        {
+            _counts[activityName]++;
+        }
+        else
+        {
+            _counts[activityName] = 1;
+        }
+    }
+
+    public static int GetCount(string activityName)
+    {
+        return _counts.ContainsKey(activityName) ? _counts[activityName] : 0;
+    }
+
+    public static void DisplayStatistics()
+    {
+        Console.Clear();
+        Console.WriteLine("=== Registro de Atividades Realizadas ===");
+        Console.WriteLine();
+
+        if (_counts.Count == 0)
+        {
+            Console.WriteLine("Nenhuma atividade foi realizada ainda.");
+        }
+        else
+        {
+            foreach (var entry in _counts)
+            {
+                Console.WriteLine($"  {entry.Key}: {entry.Value} vez(es)");
+            }
+        }
+
+        Console.WriteLine();
+        Console.WriteLine("Pressione Enter para voltar ao menu.");
+        Console.ReadLine();
+    }
+}
+// =================================================================================
 
 public class Activity
 {
@@ -74,6 +130,13 @@ public class Activity
         Console.WriteLine($"Bem-vindo à Atividade de {_name}.\n");
         Console.WriteLine(_description);
         Console.WriteLine();
+
+        // ===== FUNÇÃO EXTRA: mostra quantas vezes essa atividade já foi feita antes =====
+        int previous = ActivityStatistics.GetCount(_name);
+        Console.WriteLine($"(Você já realizou esta atividade {previous} vez(es) antes.)");
+        // =================================================================================
+
+        Console.WriteLine();
         Console.Write("Quantos segundos você gostaria que durasse sua sessão? ");
         _duration = int.Parse(Console.ReadLine());
 
@@ -91,6 +154,13 @@ public class Activity
         Console.WriteLine();
         Console.WriteLine($"Você completou mais {_duration} segundos da Atividade de {_name}.");
         ShowSpinner(3);
+
+        // ===== FUNÇÃO EXTRA: registra que a atividade foi concluída e mostra o total =====
+        ActivityStatistics.RegisterCompletion(_name);
+        int total = ActivityStatistics.GetCount(_name);
+        Console.WriteLine();
+        Console.WriteLine($"[Registro] Atividade de {_name} realizada {total} vez(es) no total.");
+        // =================================================================================
     }
 
     public void ShowSpinner(int seconds)
